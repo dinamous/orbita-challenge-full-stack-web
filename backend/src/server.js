@@ -1,23 +1,27 @@
-import express from 'express'
-import useRoutes from './routes.js'
-import User from './models/Student.js'
-import config from './config/database.js'
-import { Sequelize } from 'sequelize'
+import express from 'express';
+import useRoutes from './routes.js';
+import User from './models/Student.js';
+import config from './config/database.js';
+import { Sequelize } from 'sequelize';
 
-const app = express()
-app.use(express.json())
+const app = express();
+app.use(express.json());
 
-const sequelize = new Sequelize(config)
-User.init(sequelize)
+const sequelize = new Sequelize(config);
 
-app.use('/student', useRoutes)
+// Inicializar o modelo apenas fora do ambiente de teste
+if (process.env.NODE_ENV !== 'test') {
+  User.init(sequelize);
+  sequelize
+    .authenticate()
+    .then(() => {
+      console.log('Database Connected');
+    })
+    .catch((err) => {
+      console.error(err);
+    });
+}
 
-sequelize.authenticate().then(() => {
-  console.log("Database Connected")
-  app.listen(3000, (err, res) => {
-    console.log("Server on")
-  })
-}).catch((err) => {
-  console.error(err)
-})
+app.use('/student', useRoutes);
 
+export default app;
