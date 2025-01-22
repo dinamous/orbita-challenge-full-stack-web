@@ -1,4 +1,4 @@
-import Sequelize, { Model } from 'sequelize'
+import Sequelize, { Model } from 'sequelize';
 
 class Student extends Model {
   static init(sequelize) {
@@ -11,21 +11,25 @@ class Student extends Model {
         email: {
           type: Sequelize.STRING,
           allowNull: false,
-          unique: true,
+
         },
         cpf: {
           type: Sequelize.STRING,
           allowNull: false,
-          unique: true,
+
         },
         ra: {
           type: Sequelize.STRING,
           allowNull: false,
           unique: true,
         },
+      },
+      {
+        sequelize,
+        tableName: 'student',
       }
-      , { sequelize })
+    );
   }
 }
 
-export default Student
+export default Student;

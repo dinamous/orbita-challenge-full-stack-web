@@ -6,7 +6,8 @@
   "type": "module",
   "scripts": {
     "test": "NODE_ENV=test jest",
-    "start": "docker compose up -d && npx sequelize-cli db:migrate"
+    "database": "docker compose up -d && npx sequelize-cli db:migrate",
+    "start": "node startServer.js"
   },
   "keywords": [],
   "author": "",
