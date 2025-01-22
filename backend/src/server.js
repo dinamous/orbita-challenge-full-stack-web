@@ -10,7 +10,7 @@ app.use(express.json())
 const sequelize = new Sequelize(config)
 User.init(sequelize)
 
-app.use('/students', useRoutes)
+app.use('/student', useRoutes)
 
 sequelize.authenticate().then(() => {
   console.log("Database Connected")
