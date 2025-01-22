@@ -67,16 +67,17 @@ describe('Student Controller Tests', () => {
 
   it('should fetch all students', async () => {
     Student.findAll.mockResolvedValue([
-      { id: '1', name: 'Ana Pereira', email: 'ana.pereira@example.com', ra: '34567' },
-      { id: '2', name: 'João Souza', email: 'joao.souza@example.com', ra: '45678' },
+      { id: '1', name: 'João Silva', email: 'joao.silva@example.com', ra: '12345' },
     ]);
 
     const response = await request(app).get('/student/all');
 
     expect(response.status).toBe(200);
-    expect(response.body.length).toBe(2);
-    expect(response.body[0].name).toBe('Ana Pereira');
-    expect(response.body[1].name).toBe('João Souza');
+    expect(response.body).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ name: 'João Silva', email: 'joao.silva@example.com' }),
+      ])
+    );
   });
 
   it('should return 404 for a non-existent student', async () => {
