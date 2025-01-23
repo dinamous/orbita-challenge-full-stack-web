@@ -1,6 +1,6 @@
 <template>
   <v-app-bar>
-    <v-app-bar-nav-icon />
+    <v-app-bar-nav-icon @click="toggleSidebar" />
     <v-app-bar-title>Meu App</v-app-bar-title>
     <template #append>
       <v-btn icon>
@@ -14,3 +14,13 @@
     </template>
   </v-app-bar>
 </template>
+
+<script setup lang="ts">
+import { useAppStore } from '@/stores/app';
+
+const appStore = useAppStore();
+
+const toggleSidebar = () => {
+  appStore.toggleSidebar();
+};
+</script>
