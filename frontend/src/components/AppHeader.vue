@@ -12,12 +12,6 @@ const toggleSidebar = () => {
     <v-app-bar-nav-icon @click="toggleSidebar" />
     <v-app-bar-title>Meu App</v-app-bar-title>
     <template #append>
-      <v-btn icon>
-        <v-badge info>
-          <v-icon icon="mdi-bell-outline" />
-        </v-badge>
-      </v-btn>
-
       <v-menu>
         <template #activator="{ props }">
           <v-avatar v-bind="props">
