@@ -10,6 +10,8 @@ export interface Student{
 }
 
 export interface StudentStore{
-  students: Student[],
-  student: Student
+  students: Student[];
+  student: Student;
+  loading: boolean,
+  error: unknown,
 }

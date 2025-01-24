@@ -1,6 +1,8 @@
 // src/stores/student.js
 import { defineStore } from 'pinia';
 import type { Student, StudentStore } from '../types/Student';
+import { studentsAPI } from '@/services/studentsAPI';
+
 
 export const useStudentStore = defineStore('student', {
   state: (): StudentStore => ({
@@ -10,7 +12,9 @@ export const useStudentStore = defineStore('student', {
       email: "",
       cpf: "",
       ra: "",
-    }
+    },
+    loading: false,
+    error: null,
   }),
 
   actions: {
@@ -27,6 +31,17 @@ export const useStudentStore = defineStore('student', {
 
     removeStudent(id: string) {
       this.students = this.students.filter(student => student.ra !== id);
+    },
+
+    async fetchStudents() {
+      this.loading = true;
+      try {
+        this.students = await studentsAPI.getStudents();
+      } catch (error) {
+        this.error = error;
+      } finally {
+        this.loading = false;
+      }
     },
   },
 
