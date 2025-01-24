@@ -26,8 +26,8 @@ export const useStudentStore = defineStore("student", {
   actions: {
     async addStudent(student: Student) {
       this.loading = true;
-      this.error = null; // Resetando erro
-      this.successMessage = ""; // Resetando mensagem de sucesso
+      this.error = null;
+      this.successMessage = "";
 
       try {
         await studentsAPI.createStudent(student);
@@ -40,11 +40,19 @@ export const useStudentStore = defineStore("student", {
       }
     },
 
-    updateStudent(student: Student) {
-      const index = this.students.findIndex((s) => s.ra === student.ra);
-      if (index !== -1) {
-        this.students[index] = student;
-        this.successMessage = "Aluno atualizado com sucesso!"; // Mensagem de sucesso
+    async updateStudent(student: Student) {
+      this.loading = true;
+      this.error = null;
+      this.successMessage = "";
+
+      try {
+        await studentsAPI.updateStudent(student.id, student);
+        this.successMessage = "Aluno atualizado com sucesso!";
+      } catch (error) {
+        this.error = "Falha ao atualizar aluno.";
+      } finally {
+        this.loading = false;
+        await this.fetchStudents();
       }
     },
 

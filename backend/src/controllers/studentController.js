@@ -33,13 +33,13 @@ export const createStudent = async (req, res) => {
       return res.status(400).json({ message: "Invalid CPF format" });
     }
 
-    const hashedCpf = await bcrypt.hash(cpf, 10);
+
 
     const studentToBeCreated = {
       id: crypto.randomUUID(),
       name,
       email,
-      cpf: hashedCpf,
+      cpf,
       ra,
     };
 
@@ -115,10 +115,6 @@ export const updateStudent = [limiter, async (req, res) => {
     }
 
     const updatedData = { name, email, ra };
-
-    if (cpf) {
-      updatedData.cpf = await bcrypt.hash(cpf, 10);
-    }
 
     await student.update(updatedData);
     return res.status(200).json({ message: "Student updated successfully", student });

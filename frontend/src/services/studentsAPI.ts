@@ -32,7 +32,7 @@ export const studentsAPI = {
     return response.data;
   },
   async updateStudent(id: string, student: Student): Promise<Student> {
-    const response = await api.put(`/student/${id}`, student);
+    const response = await api.put(`/student/update/${id}`, student);
     return response.data;
   },
   async deleteStudent(id: string): Promise<void> {
