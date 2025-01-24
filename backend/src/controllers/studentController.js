@@ -59,7 +59,7 @@ export const createStudent = async (req, res) => {
  */
 export const getAllStudents = async (req, res) => {
   try {
-    const students = await Student.findAll({ attributes: ["id", "name", "email", "ra"] });
+    const students = await Student.findAll({ attributes: ["id", "name", "email", "ra", "cpf"] });
     return res.status(200).json(students);
   } catch (error) {
     return handleError(res, error);
@@ -72,7 +72,7 @@ export const getAllStudents = async (req, res) => {
 export const getStudentById = async (req, res) => {
   try {
     const { id } = req.params;
-    const student = await Student.findByPk(id, { attributes: ["id", "name", "email", "ra"] });
+    const student = await Student.findByPk(id, { attributes: ["id", "name", "email", "ra", "cpf"] });
 
     if (!student) {
       return res.status(404).json({ message: "Student not found" });

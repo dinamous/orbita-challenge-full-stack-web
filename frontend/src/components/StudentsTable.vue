@@ -52,12 +52,15 @@
 import { ref } from 'vue';
 import ButtonAddStudent from './ButtonAddStudent.vue';
 import type { Student } from '../types/Student';
+import { useStudentStore } from '@/stores/students';
 
 // Dados de estudantes
 const students = ref<Student[]>([
   { ra: '1', name: 'Maria', email: 'maria@mail.com', cpf: '12345678900' },
   { ra: '2', name: 'José', email: 'jose@mail.com', cpf: '98765432100' },
 ]);
+
+const studentStore = useStudentStore()
 
 const selectedStudent = ref<Student | null>(null);
 
@@ -70,4 +73,10 @@ const editStudent = (student: Student) => {
   selectedStudent.value = student;
   dialog.value = true;
 };
+
+onMounted(() => {
+  studentStore.fetchStudents()
+  console.log("chama request")
+})
+
 </script>
