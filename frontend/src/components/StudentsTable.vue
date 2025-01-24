@@ -28,13 +28,24 @@
               <!-- Botão para editar, abre o modal passando o aluno -->
               <v-btn icon="mdi-pencil" size="small" color="primary" rounded="lg" @click="editStudent(student)" />
               <!-- Botão para excluir -->
-              <v-btn icon="mdi-delete" size="small" color="red-darken-1" rounded="lg" class="ml-1" />
+              <v-btn icon="mdi-delete" size="small" color="red-darken-1" rounded="lg" class="ml-1"
+                @click="dialogDelete = true" />
             </td>
           </tr>
         </tbody>
       </v-table>
     </v-col>
   </v-row>
+
+  <v-dialog v-model="dialogDelete" width="auto">
+    <v-card max-width="400" prepend-icon="mdi-account-alert-outline"
+      text="Você está prestes a desmatricular este aluno. Tenha certeza de que está fazendo a ação correta."
+      title="Desmatricular Aluno">
+      <template #actions>
+        <v-btn class="ms-auto" text="Desmatricular" @click="dialogDelete = false" />
+      </template>
+    </v-card>
+  </v-dialog>
 </template>
 
 <script setup lang="ts">
@@ -52,6 +63,7 @@ const selectedStudent = ref<Student | null>(null);
 
 // Controle da modal
 const dialog = ref(false);
+const dialogDelete = ref(false);
 
 // Função chamada ao clicar no botão de editar
 const editStudent = (student: Student) => {
