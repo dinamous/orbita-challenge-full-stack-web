@@ -7,11 +7,17 @@ const api = axios.create({
 });
 
 export const studentsAPI = {
-  async getStudents(): Promise<Student[]> {
-    const response = await api.get("/student/all");
-    console.log(response);
-    return response.data;
-  },
+async getStudents({ page = 1, itemsPerPage = 10, search = '' }: { page?: number; itemsPerPage?: number; search?: string } = {}): Promise<{ students: Student[]; total: number }> {
+  const response = await api.get("/student/all", {
+    params: {
+      page,
+      itemsPerPage,
+      search,
+    },
+  });
+  return response.data; 
+}
+,
   async getStudentById(id: string): Promise<Student> {
     const response = await api.get(`/student/${id}`);
     return response.data;

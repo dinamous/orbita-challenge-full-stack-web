@@ -12,6 +12,10 @@ export interface Student{
 export interface StudentStore{
   students: Student[];
   student: Student;
+  total: number, 
+  currentPage: number, 
+  itemsPerPage: number, 
   loading: boolean,
   error: unknown,
+  search:string
 }

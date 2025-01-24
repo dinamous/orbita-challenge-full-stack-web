@@ -1,4 +1,5 @@
 import app from './src/server.js'; // Importa o app do arquivo server.js
+import 'dotenv/config'
 
 const PORT = process.env.PORT || 3001;
 

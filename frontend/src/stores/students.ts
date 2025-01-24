@@ -3,7 +3,6 @@ import { defineStore } from 'pinia';
 import type { Student, StudentStore } from '../types/Student';
 import { studentsAPI } from '@/services/studentsAPI';
 
-
 export const useStudentStore = defineStore('student', {
   state: (): StudentStore => ({
     students: [],
@@ -13,8 +12,12 @@ export const useStudentStore = defineStore('student', {
       cpf: "",
       ra: "",
     },
+    total: 0, 
+    currentPage: 1, 
+    itemsPerPage: 10, 
     loading: false,
     error: null,
+    search: ""
   }),
 
   actions: {
@@ -33,19 +36,22 @@ export const useStudentStore = defineStore('student', {
       this.students = this.students.filter(student => student.ra !== id);
     },
 
-    async fetchStudents() {
-      this.loading = true;
-      try {
-        this.students = await studentsAPI.getStudents();
-      } catch (error) {
-        this.error = error;
-      } finally {
-        this.loading = false;
-      }
-    },
+    async fetchStudents({ page = 1, itemsPerPage = 10, search = '' }: { page?: number; itemsPerPage?: number; search?: string }) {
+  this.loading = true;
+  try {
+    const { students, total } = await studentsAPI.getStudents({ page, itemsPerPage, search });
+    this.students = students;
+    this.total = total;
+  } catch (error) {
+    this.error = error;
+  } finally {
+    this.loading = false;
+  }
+}
   },
 
   getters: {
     getStudents: (state) => state.students,
+    totalPages: (state) => Math.ceil(state.total / state.itemsPerPage), // Total de páginas
   },
 });
