@@ -8,6 +8,7 @@ export const useStudentStore = defineStore("student", {
   state: (): StudentStore => ({
     students: [],
     student: {
+      id: "",
       name: "",
       email: "",
       cpf: "",
@@ -47,8 +48,16 @@ export const useStudentStore = defineStore("student", {
       }
     },
 
-    removeStudent(id: string) {
-      this.students = this.students.filter((student) => student.ra !== id);
+    async removeStudent(id: string) {
+      try {
+        await studentsAPI.deleteStudent(id);
+        this.successMessage = "Aluno removido com sucesso!";
+      } catch (error) {
+        this.error = "Falha ao remover aluno.";
+      } finally {
+        this.loading = false;
+        await this.fetchStudents();
+      }
     },
 
     async fetchStudents({

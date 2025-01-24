@@ -27,8 +27,8 @@
                 :rules="[rules.required, rules.cpf]" />
             </v-col>
             <v-col cols="12">
-              <v-text-field v-model="formData.ra" label="RA" variant="outlined"
-                :rules="[rules.required, rules.numeric]" />
+              <v-text-field v-model="formData.ra" label="RA" variant="outlined" :rules="[rules.required, rules.numeric]"
+                :readonly="editMode" />
             </v-col>
           </v-row>
         </v-form>
@@ -73,6 +73,7 @@ const formData = ref<Student>({
   email: '',
   cpf: '',
   ra: '',
+  id: ''
 });
 
 // Store
@@ -120,6 +121,7 @@ const resetForm = () => {
     email: '',
     cpf: '',
     ra: '',
+    id: '',
   };
 };
 

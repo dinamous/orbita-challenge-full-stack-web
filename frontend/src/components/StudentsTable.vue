@@ -13,7 +13,7 @@
       <v-data-table-server v-model:items-per-page="itemsPerPage" :headers="headers" :items="students"
         :items-length="total" :loading="loading" :search="search" item-value="name" @update:options="loadItems">
         <template #body="{ items }">
-          <tr v-for="student in items" :key="student.ra">
+          <tr v-for="student in items" :key="student.id">
             <td>{{ student.name }}</td>
             <td>{{ student.email }}</td>
             <td>{{ student.cpf }}</td>
@@ -21,7 +21,7 @@
             <td>
               <v-btn icon="mdi-pencil" size="small" color="primary" rounded="lg" @click="editStudent(student)" />
               <v-btn icon="mdi-delete" size="small" color="red-darken-1" rounded="lg" class="ml-1"
-                @click="onDeleteStudent(student.ra)" />
+                @click="onDeleteStudent(student.id)" />
             </td>
           </tr>
         </template>
@@ -78,8 +78,8 @@ const editStudent = (student: Student) => {
 };
 
 // Excluir aluno
-const onDeleteStudent = (ra: string) => {
-  studentToDelete.value = ra;
+const onDeleteStudent = (id: string) => {
+  studentToDelete.value = id;
   dialogDelete.value = true;
 };
 
