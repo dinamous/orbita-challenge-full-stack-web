@@ -3,13 +3,14 @@ import useRoutes from './routes.js';
 import User from './models/Student.js';
 import config from './config/database.js';
 import { Sequelize } from 'sequelize';
+import cors from "cors"
 
 const app = express();
 app.use(express.json());
+app.use(cors());
 
 const sequelize = new Sequelize(config);
 
-// Inicializar o modelo apenas fora do ambiente de teste
 if (process.env.NODE_ENV !== 'test') {
   User.init(sequelize);
   sequelize
