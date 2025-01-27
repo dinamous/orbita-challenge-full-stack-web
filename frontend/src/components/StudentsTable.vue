@@ -11,7 +11,9 @@
   <v-row>
     <v-col>
       <v-data-table-server v-model:items-per-page="itemsPerPage" :headers="headers" :items="students"
-        :items-length="total" :loading="loading" :search="search" item-value="name" @update:options="loadItems">
+        :items-length="total" :loading="loading" :search="search" item-value="name"
+        items-per-page-text="Itens por página" loading-text="Carregando..." no-data-text="Nenhum aluno matriculado."
+        @update:options="loadItems">
         <template #body="{ items }">
           <tr v-for="student in items" :key="student.id">
             <td>{{ student.name }}</td>

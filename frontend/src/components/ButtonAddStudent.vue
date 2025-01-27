@@ -24,11 +24,16 @@
             </v-col>
             <v-col cols="12">
               <v-text-field v-model="formData.cpf" label="CPF" variant="outlined" maxlength="14"
-                :rules="[rules.required, rules.cpf]" />
+                :rules="[rules.required, rules.cpf]" @input="formatCPFInput" />
             </v-col>
-            <v-col cols="12">
+            <v-col cols="10">
               <v-text-field v-model="formData.ra" label="RA" variant="outlined" :rules="[rules.required, rules.numeric]"
-                :readonly="editMode" />
+                :readonly="editMode" hint="O RA deve ser um identificador unico." />
+            </v-col>
+            <v-col cols="2">
+              <v-btn block height="50" prev-icon="mdi-plus" color="indigo-darken-3" @click="generateRA">
+                Gerar RA
+              </v-btn>
             </v-col>
           </v-row>
         </v-form>
@@ -51,7 +56,6 @@ import { useStudentStore } from '../stores/students';
 import type { Student } from '../types/Student';
 import type { VForm } from 'vuetify/components';
 
-
 const props = defineProps({
   student: {
     type: Object as () => Student | null,
@@ -72,12 +76,10 @@ const formData = ref<Student>({
   email: '',
   cpf: '',
   ra: '',
-  id: ''
+  id: '',
 });
 
-
 const studentStore = useStudentStore();
-
 
 const rules = {
   required: (value: string) => !!value || 'Campo obrigatório.',
@@ -96,7 +98,7 @@ watch(() => props.open, (newVal) => {
 watch(() => props.student, (student) => {
   if (student) {
     editMode.value = true;
-    formData.value = { ...student };
+    formData.value = { ...student, cpf: formatCPFForDisplay(student.cpf) };
     dialog.value = true;
   } else {
     editMode.value = false;
@@ -120,16 +122,35 @@ const resetForm = () => {
   };
 };
 
+
 const saveStudent = () => {
   if (form.value?.validate()) {
+    const sanitizedData = {
+      ...formData.value,
+      cpf: formData.value.cpf.replace(/\D/g, ''),
+    };
     if (editMode.value) {
-      studentStore.updateStudent(formData.value);
+      studentStore.updateStudent(sanitizedData);
     } else {
-      studentStore.addStudent(formData.value);
+      studentStore.addStudent(sanitizedData);
     }
     closeDialog();
   }
 };
+
+
+const formatCPFInput = (value: string) => {
+  formData.value.cpf = value
+    .replace(/\D/g, '')
+    .replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4')
+    .slice(0, 14);
+};
+
+
+const formatCPFForDisplay = (cpf: string) => {
+  return cpf.replace(/\D/g, '').replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
+};
+
 
 const validateCPF = (cpf: string) => {
   const cleanedCPF = cpf.replace(/\D/g, '');
@@ -149,5 +170,9 @@ const validateCPF = (cpf: string) => {
     validateDigit(d1, parseInt(cleanedCPF[9])) &&
     validateDigit(d2, parseInt(cleanedCPF[10]))
   );
+};
+const generateRA = () => {
+  const randomRA = Math.floor(Math.random() * Math.pow(10, 10)); // Gera um número aleatório até 10^10
+  formData.value.ra = randomRA.toString().padStart(10, '0'); // Converte para string e preenche com zeros à esquerda
 };
 </script>
