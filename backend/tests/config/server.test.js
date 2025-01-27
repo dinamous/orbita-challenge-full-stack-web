@@ -15,6 +15,5 @@ describe('Server Tests', () => {
     const response = await request(app).get('/student/all');
 
     expect(response.status).toBe(200);
-    // expect(response.body.message).toBe('Server is running');
   });
 });

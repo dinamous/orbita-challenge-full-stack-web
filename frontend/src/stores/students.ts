@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-// src/stores/student.js
 import { defineStore } from "pinia";
 import type { Student, StudentStore } from "../types/Student";
 import { studentsAPI } from "@/services/studentsAPI";
@@ -19,7 +18,7 @@ export const useStudentStore = defineStore("student", {
     itemsPerPage: 10,
     loading: false,
     error: null,
-    successMessage: "", // Adicionando variável de mensagem de sucesso
+    successMessage: "",
     search: "",
   }),
 
@@ -72,25 +71,31 @@ export const useStudentStore = defineStore("student", {
       page = 1,
       itemsPerPage = 10,
       search = "",
+      sortBy = "name",
+      order = "asc",
     }: {
       page?: number;
       itemsPerPage?: number;
       search?: string;
+      sortBy?: string;
+      order?: string;
     } = {}) {
       console.log("iniciou o fetch");
       this.loading = true;
-      this.error = null; // Resetando erro
-      this.successMessage = ""; // Resetando mensagem de sucesso
+      this.error = null;
+      this.successMessage = "";
 
       try {
         const { students, total } = await studentsAPI.getStudents({
           page,
           itemsPerPage,
           search,
+          sortBy,
+          order,
         });
         this.students = students;
         this.total = total;
-        this.successMessage = "Alunos carregados com sucesso!"; // Mensagem de sucesso
+        this.successMessage = "Alunos carregados com sucesso!";
       } catch (error) {
         this.error = "Falha ao carregar alunos.";
       } finally {
@@ -101,6 +106,6 @@ export const useStudentStore = defineStore("student", {
 
   getters: {
     getStudents: (state) => state.students,
-    totalPages: (state) => Math.ceil(state.total / state.itemsPerPage), // Total de páginas
+    totalPages: (state) => Math.ceil(state.total / state.itemsPerPage),
   },
 });

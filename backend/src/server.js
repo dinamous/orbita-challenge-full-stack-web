@@ -11,7 +11,6 @@ app.use(cors());
 
 const sequelize = new Sequelize(config);
 
-// Inicializar o modelo apenas fora do ambiente de teste
 if (process.env.NODE_ENV !== 'test') {
   User.init(sequelize);
   sequelize

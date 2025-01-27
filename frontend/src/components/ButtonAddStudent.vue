@@ -51,7 +51,7 @@ import { useStudentStore } from '../stores/students';
 import type { Student } from '../types/Student';
 import type { VForm } from 'vuetify/components';
 
-// Props
+
 const props = defineProps({
   student: {
     type: Object as () => Student | null,
@@ -63,7 +63,6 @@ const props = defineProps({
   },
 });
 
-// Refs e estado
 const dialog = ref(props.open);
 const form = ref<VForm | null>(null);
 const isValid = ref(false);
@@ -76,10 +75,10 @@ const formData = ref<Student>({
   id: ''
 });
 
-// Store
+
 const studentStore = useStudentStore();
 
-// Regras de validação
+
 const rules = {
   required: (value: string) => !!value || 'Campo obrigatório.',
   email: (value: string) => /.+@.+\..+/.test(value) || 'E-mail inválido.',
@@ -87,7 +86,6 @@ const rules = {
   numeric: (value: string) => /^\d+$/.test(value) || 'Deve conter apenas números.',
 };
 
-// Quando a prop 'open' for alterada, vamos controlar o estado do modal
 watch(() => props.open, (newVal) => {
   dialog.value = newVal;
   if (!newVal) {
@@ -95,7 +93,6 @@ watch(() => props.open, (newVal) => {
   }
 });
 
-// Quando a prop 'student' for alterada, vamos preencher os dados de edição
 watch(() => props.student, (student) => {
   if (student) {
     editMode.value = true;
@@ -107,13 +104,11 @@ watch(() => props.student, (student) => {
   }
 });
 
-// Fechar diálogo e resetar formulário
 const closeDialog = () => {
   dialog.value = false;
   resetForm();
 };
 
-// Resetar formulário
 const resetForm = () => {
   form.value?.resetValidation();
   formData.value = {
@@ -125,19 +120,17 @@ const resetForm = () => {
   };
 };
 
-// Salvar estudante
 const saveStudent = () => {
   if (form.value?.validate()) {
     if (editMode.value) {
-      studentStore.updateStudent(formData.value);  // Atualiza o aluno
+      studentStore.updateStudent(formData.value);
     } else {
-      studentStore.addStudent(formData.value);  // Adiciona o aluno
+      studentStore.addStudent(formData.value);
     }
     closeDialog();
   }
 };
 
-// Validação de CPF
 const validateCPF = (cpf: string) => {
   const cleanedCPF = cpf.replace(/\D/g, '');
   if (cleanedCPF.length !== 11) return false;

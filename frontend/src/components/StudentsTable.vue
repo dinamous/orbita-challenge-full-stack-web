@@ -58,32 +58,54 @@ const currentPage = ref(1);
 const studentToDelete = ref<string | null>(null);
 
 const headers = [
-  { text: 'Nome', value: 'name' },
-  { text: 'Email', value: 'email' },
-  { text: 'CPF', value: 'cpf' },
-  { text: 'RA', value: 'ra' },
-  { text: 'Ações', value: 'actions', sortable: false },
-];
+  {
+    title: 'Nome',
 
-// Função de carregamento de itens
-const loadItems = async ({ page, itemsPerPage }: { page: number; itemsPerPage: number }) => {
-  currentPage.value = page;
-  await studentStore.fetchStudents({ page, itemsPerPage, search: search.value });
+    key: 'name',
+  },
+  { title: 'Email', key: 'email' },
+  { title: 'CPF', key: 'cpf' },
+  { title: 'RA', key: 'RA' },
+  { title: 'Ações', key: 'action', sortable: false, },
+
+]
+
+
+
+const loadItems = async ({
+  page,
+  itemsPerPage,
+  sortBy = [],
+}: {
+  page: number;
+  itemsPerPage: number;
+  sortBy: Array<{ key: string; order: string }>;
+}) => {
+  const sortKey = sortBy?.[0]?.key || "name";
+  const sortOrder = sortBy?.[0]?.order || "asc";
+
+  await studentStore.fetchStudents({
+    page,
+    itemsPerPage,
+    search: search.value,
+    sortBy: sortKey,
+    order: sortOrder,
+  });
 };
 
-// Editar aluno
+
+
 const editStudent = (student: Student) => {
   selectedStudent.value = student;
   dialog.value = true;
 };
 
-// Excluir aluno
+
 const onDeleteStudent = (id: string) => {
   studentToDelete.value = id;
   dialogDelete.value = true;
 };
 
-// Confirmar exclusão
 const confirmDelete = () => {
   if (studentToDelete.value) {
     studentStore.removeStudent(studentToDelete.value);
@@ -92,18 +114,25 @@ const confirmDelete = () => {
   studentToDelete.value = null;
 };
 
-// Função de busca
 const onSearch = () => {
   currentPage.value = 1;
-  studentStore.fetchStudents({ page: 1, itemsPerPage: itemsPerPage.value, search: search.value });
+  studentStore.fetchStudents({
+    page: 1,
+    itemsPerPage: itemsPerPage.value,
+    search: search.value,
+    sortBy: headers?.[0]?.key || "name",
+    order: "asc",
+  });
 };
 
-// Monitorar alterações no campo de busca
 watch(search, onSearch);
 
-// Carregar dados na montagem inicial
 onMounted(() => {
-  loadItems({ page: currentPage.value, itemsPerPage: itemsPerPage.value });
+  loadItems({
+    page: currentPage.value,
+    itemsPerPage: itemsPerPage.value,
+    sortBy: [{ key: headers?.[0]?.key || "name", order: "asc" }],
+  });
 });
 </script>
 

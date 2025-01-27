@@ -2,7 +2,6 @@
 import { useAppStore } from '@/stores/app';
 import { computed } from 'vue';
 
-// Acessa a store e cria um estado computado vinculado à sidebar
 const appStore = useAppStore();
 const isSidebarOpen = computed(() => appStore.isSidebarOpen);
 </script>

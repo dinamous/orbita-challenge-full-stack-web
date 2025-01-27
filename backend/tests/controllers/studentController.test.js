@@ -1,7 +1,6 @@
 import request from 'supertest';
 import app from '../../src/server';
 
-// Mock do modelo Student
 jest.mock('../../src/models/Student.js', () => ({
   create: jest.fn(),
   findAll: jest.fn(),
@@ -14,11 +13,10 @@ import Student from '../../src/models/Student.js';
 
 describe('Student Controller Tests', () => {
   beforeEach(() => {
-    jest.clearAllMocks(); // Limpa os mocks antes de cada teste
+    jest.clearAllMocks();
   });
 
   it('should create a student successfully', async () => {
-    // Configura o mock para o método create
     Student.create.mockResolvedValue({
       id: '1',
       name: 'Carlos Silva',

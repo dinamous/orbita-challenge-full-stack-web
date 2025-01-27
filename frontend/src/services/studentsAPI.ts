@@ -10,7 +10,15 @@ export const studentsAPI = {
     page = 1,
     itemsPerPage = 10,
     search = "",
-  }: { page?: number; itemsPerPage?: number; search?: string } = {}): Promise<{
+    sortBy = "name",
+    order = "asc",
+  }: {
+    page?: number;
+    itemsPerPage?: number;
+    search?: string;
+    sortBy?: string;
+    order?: string;
+  } = {}): Promise<{
     students: Student[];
     total: number;
   }> {
@@ -19,6 +27,8 @@ export const studentsAPI = {
         page,
         itemsPerPage,
         search,
+        sortBy,
+        order,
       },
     });
     return response.data;

@@ -32,9 +32,6 @@ export const createStudent = async (req, res) => {
     if (!/^[0-9]{11}$/.test(cpf)) {
       return res.status(400).json({ message: "Invalid CPF format" });
     }
-
-
-
     const studentToBeCreated = {
       id: crypto.randomUUID(),
       name,
@@ -52,16 +49,23 @@ export const createStudent = async (req, res) => {
 
 export const getAllStudents = [limiter, async (req, res) => {
   try {
-    const { page = 1, itemsPerPage = 10, search = "" } = req.query;
+    const { page = 1, itemsPerPage = 10, search = "", sortBy = "name", order = "asc" } = req.query;
 
     const where = {};
     if (search) {
       where.name = { [Op.iLike]: `%${search}%` };
     }
 
+
+    const sortOptions = [];
+    if (sortBy) {
+      sortOptions.push([sortBy, order.toUpperCase()]);
+    }
+
     const { count, rows } = await Student.findAndCountAll({
       attributes: ["id", "name", "email", "ra", "cpf"],
       where,
+      order: sortOptions,
       limit: parseInt(itemsPerPage, 10),
       offset: (parseInt(page, 10) - 1) * parseInt(itemsPerPage, 10),
     });
@@ -79,6 +83,7 @@ export const getAllStudents = [limiter, async (req, res) => {
     res.status(500).json({ message: "Internal server error", error: error.message });
   }
 }];
+
 
 export const getStudentById = [limiter, async (req, res) => {
   try {
