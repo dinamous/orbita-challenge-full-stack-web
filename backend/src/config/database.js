@@ -1,12 +1,14 @@
+import 'dotenv/config';
+
 export default {
   dialect: 'postgres',
-  username: 'postgres',
-  password: 'vertrigo',
-  host: 'localhost',
-  database: 'studentsdb',
+  username: process.env.DB_USERNAME || 'postgres',
+  password: process.env.DB_PASSWORD || 'vertrigo',
+  host: process.env.DB_HOST || 'localhost',
+  database: process.env.DB_NAME || 'studentsdb',
   define: {
-    timestamp: true,
+    timestamps: true,
     underscored: true,
-    underscoredAll: true
-  }
-}
+    underscoredAll: true,
+  },
+};
