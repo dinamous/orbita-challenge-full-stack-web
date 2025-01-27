@@ -24,14 +24,15 @@
             </v-col>
             <v-col cols="12">
               <v-text-field v-model="formData.cpf" label="CPF" variant="outlined" maxlength="14"
-                :rules="[rules.required, rules.cpf]" @input="formatCPFInput" />
+                :rules="[rules.required, rules.cpf]" @input="sanitizeAndFormatCPF" />
             </v-col>
             <v-col cols="10">
               <v-text-field v-model="formData.ra" label="RA" variant="outlined" :rules="[rules.required, rules.numeric]"
-                :readonly="editMode" hint="O RA deve ser um identificador unico." />
+                :readonly="editMode" hint="O RA deve ser um identificador unico." @input="preventEditIfReadonly" />
             </v-col>
             <v-col cols="2">
-              <v-btn block height="50" prev-icon="mdi-plus" color="indigo-darken-3" @click="generateRA">
+              <v-btn block height="50" prev-icon="mdi-plus" color="indigo-darken-3" :disabled="editMode"
+                @click="generateRA">
                 Gerar RA
               </v-btn>
             </v-col>
@@ -139,13 +140,25 @@ const saveStudent = () => {
 };
 
 
-const formatCPFInput = (value: string) => {
-  formData.value.cpf = value
-    .replace(/\D/g, '')
-    .replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4')
-    .slice(0, 14);
+const preventEditIfReadonly = (value: string) => {
+  if (editMode.value) {
+
+    formData.value.ra = props.student?.ra || '';
+  } else {
+
+    formData.value.ra = value.replace(/\D/g, '');
+  }
 };
 
+const sanitizeAndFormatCPF = (event: Event) => {
+  const input = event.target as HTMLInputElement;
+
+  const onlyNumbers = input.value.replace(/\D/g, '');
+  formData.value.cpf = onlyNumbers
+    .replace(/(\d{3})(\d)/, '$1.$2')
+    .replace(/(\d{3})(\d)/, '$1.$2')
+    .replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+};
 
 const formatCPFForDisplay = (cpf: string) => {
   return cpf.replace(/\D/g, '').replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
@@ -172,7 +185,9 @@ const validateCPF = (cpf: string) => {
   );
 };
 const generateRA = () => {
-  const randomRA = Math.floor(Math.random() * Math.pow(10, 10)); // Gera um número aleatório até 10^10
-  formData.value.ra = randomRA.toString().padStart(10, '0'); // Converte para string e preenche com zeros à esquerda
+  if (!editMode.value) {
+    const randomRA = Math.floor(Math.random() * Math.pow(10, 10));
+    formData.value.ra = randomRA.toString().padStart(10, '0');
+  }
 };
 </script>
