@@ -12,7 +12,7 @@
     "database": "docker compose up -d && npx sequelize-cli db:migrate",
     "dev": "tsx startServer.js",
     "build": "tsup src",
-    "start": "node dist/server.cjs"
+    "start": "node startServer.js"
   },
   "keywords": [],
   "author": "",
