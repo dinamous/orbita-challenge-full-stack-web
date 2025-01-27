@@ -1,9 +1,9 @@
 <template>
-  <v-row>
-    <v-col cols="8">
-      <v-text-field v-model="search" label="Digite sua busca" variant="outlined" />
+  <v-row class="">
+    <v-col cols="8" class="d-flex align-center">
+      <v-text-field v-model="search" clearable label="Digite sua busca" variant="solo" hide-details="auto" />
     </v-col>
-    <v-col cols="4">
+    <v-col cols="4" class="d-flex justify-end  align-center">
       <ButtonAddStudent :open="dialog" :student="selectedStudent" @update:open="dialog = $event" />
     </v-col>
   </v-row>
@@ -16,7 +16,7 @@
           <tr v-for="student in items" :key="student.id">
             <td>{{ student.name }}</td>
             <td>{{ student.email }}</td>
-            <td>{{ student.cpf }}</td>
+            <td>{{ formatCPF(student.cpf) }}</td>
             <td>{{ student.ra }}</td>
             <td>
               <v-btn icon="mdi-pencil" size="small" color="primary" rounded="lg" @click="editStudent(student)" />
@@ -65,12 +65,15 @@ const headers = [
   },
   { title: 'Email', key: 'email' },
   { title: 'CPF', key: 'cpf' },
-  { title: 'RA', key: 'RA' },
+  { title: 'RA', key: 'ra' },
   { title: 'Ações', key: 'action', sortable: false, },
 
 ]
 
-
+const formatCPF = (cpf: string) => {
+  if (!cpf) return "";
+  return cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4");
+};
 
 const loadItems = async ({
   page,

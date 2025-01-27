@@ -15,8 +15,8 @@
         <v-form ref="form" v-model="isValid">
           <v-row>
             <v-col cols="12">
-              <v-text-field v-model="formData.name" label="Nome completo" variant="outlined"
-                :rules="[rules.required]" />
+              <v-text-field v-model="formData.name" label="Nome completo" variant="outlined" :rules="[rules.required]"
+                maxlength="80" />
             </v-col>
             <v-col cols="12">
               <v-text-field v-model="formData.email" label="Email" variant="outlined"
