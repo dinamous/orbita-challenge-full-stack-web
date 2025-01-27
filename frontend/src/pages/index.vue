@@ -1,6 +1,6 @@
 <template>
   <AppHeader />
-  <Sidebar />
+  <!-- <Sidebar /> -->
   <v-container>
     <StudentsTable />
   </v-container>

@@ -9,8 +9,8 @@ const toggleSidebar = () => {
 </script>
 <template>
   <v-app-bar>
-    <v-app-bar-nav-icon @click="toggleSidebar" />
-    <v-app-bar-title>Meu App</v-app-bar-title>
+    <!-- <v-app-bar-nav-icon @click="toggleSidebar" /> -->
+    <v-app-bar-title>Students DashBoard</v-app-bar-title>
     <template #append>
       <v-menu>
         <template #activator="{ props }">
