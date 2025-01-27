@@ -1,9 +1,9 @@
 <template>
-  <v-row class="">
-    <v-col cols="8" class="d-flex align-center">
+  <v-row>
+    <v-col :cols="12" :md="8" class="d-flex align-center">
       <v-text-field v-model="search" clearable label="Digite sua busca" variant="solo" hide-details="auto" />
     </v-col>
-    <v-col cols="4" class="d-flex justify-end  align-center">
+    <v-col :cols="12" :md="4" class="d-flex justify-end align-center">
       <ButtonAddStudent :open="dialog" :student="selectedStudent" @update:open="dialog = $event" />
     </v-col>
   </v-row>

@@ -1,8 +1,11 @@
 <template>
-  <v-dialog v-model="dialog" width="60vw" @click:outside="closeDialog">
+  <v-dialog v-model="dialog" width="75vw" @click:outside="closeDialog">
     <template #activator="{ props }">
       <slot name="activator" v-bind="props">
-        <v-btn v-bind="props">
+        <v-btn class="d-block d-lg-none" color="#5865f2" variant="flat" block v-bind="props">
+          Cadastrar Aluno
+        </v-btn>
+        <v-btn class="d-none d-lg-flex" color="#5865f2" variant="flat" v-bind="props">
           Cadastrar Aluno
         </v-btn>
       </slot>
@@ -26,11 +29,14 @@
               <v-text-field v-model="formData.cpf" label="CPF" variant="outlined" maxlength="14"
                 :rules="[rules.required, rules.cpf]" @input="sanitizeAndFormatCPF" />
             </v-col>
-            <v-col cols="10">
+          </v-row>
+          <v-row>
+            <v-col cols="12" :md="8" :sm="6" :xs="12">
               <v-text-field v-model="formData.ra" label="RA" variant="outlined" :rules="[rules.required, rules.numeric]"
                 :readonly="editMode" hint="O RA deve ser um identificador unico." @input="preventEditIfReadonly" />
             </v-col>
-            <v-col cols="2">
+
+            <v-col cols="12" :md="4" :sm="6" :xs="12">
               <v-btn block height="50" prev-icon="mdi-plus" color="indigo-darken-3" :disabled="editMode"
                 @click="generateRA">
                 Gerar RA
